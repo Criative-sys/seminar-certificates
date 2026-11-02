@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>شهادات حضور الندوات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f4f6f8;
+  font-family: Tajawal, Arial, sans-serif;
+  color: #203749;
+}
+header {
+  background: #174d70;
+  color: white;
+  text-align: center;
+  padding: 42px 18px;
+}
+header h1 { margin: 12px 0; font-size: 32px; }
+header p { margin: 8px 0; }
+main {
+  max-width: 720px;
+  margin: -20px auto 40px;
+  padding: 0 15px;
+}
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 8px 30px #14304714;
+}
+label {
+  font-weight: 700;
+  display: block;
+  margin: 18px 0 8px;
+}
+input, select {
+  width: 100%;
+  padding: 14px;
+  font: inherit;
+  border: 1px solid #cbd5dc;
+  border-radius: 9px;
+  background: white;
+}
+.date {
+  padding: 12px;
+  color: #174d70;
+  font-weight: 700;
+}
+button {
+  background: #174d70;
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+  margin: 12px 0 0;
+}
+button:disabled { opacity: .5; cursor: default; }
+.secondary { background: #bd2779; }
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#status { line-height: 1.8; }
+#preview {
+  width: 100%;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+footer { text-align: center; padding: 25px; color: #64748b; }
+</style>
+</head>
+<body>
+
+<header>
+  <h3>جمعية الاجتماعيين</h3>
+  <h1>إصدار شهادة حضور</h1>
+  <p>البرنامج الثقافي المصاحب لمعرض الشارقة الدولي للكتاب 2026</p>
+</header>
+
+<main>
+  <section class="card">
+    <label for="seminar">عنوان الندوة</label>
+    <select id="seminar"></select>
+
+    <div class="date" id="date"></div>
+
+    <label for="name">الاسم الكامل للمشارك</label>
+    <input id="name" maxlength="90"
+           placeholder="اكتب اسمك كما ترغب بظهوره في الشهادة">
+
+    <div class="actions">
+      <button id="generate">إصدار الشهادة</button>
+      <button id="download" class="secondary" disabled>
+        تحميل PDF
+      </button>
+      <button id="print" disabled>طباعة</button>
+    </div>
+
+    <p id="status" role="status"></p>
+    <canvas id="preview" hidden></canvas>
+  </section>
+</main>
+
+<footer>جمعية الاجتماعيين © 2026</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+// PASTE YOUR GOOGLE APPS SCRIPT URL HERE
+const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
+const titles = [
+ "الأسرة المرنة... من التفهم إلى التكيف مع متغيرات العصر",
+ "تربية الأبناء في عصر الذكاء الاصطناعي",
+ "اكتشاف الموهبة وبناء شخصية الأبناء",
+ "بناء الوعي المجتمعي لمواجهة تحديات المستقبل... الإمارات نموذجًا",
+ "الأسرة الإماراتية وتعزيز الأمن الاجتماعي والفكري",
+ "كبار المواطنين... ذاكرة المجتمع ورعاية الأسرة",
+ "استشراف الحياة المجتمعية بين التحولات الكبرى ومتطلبات الاستقرار",
+ "الذكاء الاصطناعي ومستقبل العقل والسلوك الإنساني",
+ "كيف تعيد الخوارزميات تشكيل العلاقات الإنسانية؟",
+ "الخصوصية الأسرية وحماية الأبناء في العصر الرقمي",
+ "جودة الحياة والوقاية الاجتماعية نحو مجتمع أكثر أمانًا"
+];
+
+const $ = id => document.getElementById(id);
+const select = $("seminar");
+let pdfBlob = null;
+
+titles.forEach((title, index) => {
+  const option = document.createElement("option");
+  option.value = index + 1;
+  option.textContent = `الندوة ${index + 1}: ${title}`;
+  select.appendChild(option);
+});
+
+const params = new URLSearchParams(location.search);
+const chosen = Number(params.get("seminar"));
+
+if (Number.isInteger(chosen) && chosen >= 1 && chosen <= 11) {
+  select.value = chosen;
+  select.disabled = true;
+}
+
+function updateDate() {
+  const n = Number(select.value);
+  $("date").textContent = `${n + 4} نوفمبر 2026`;
+  pdfBlob = null;
+  $("download").disabled = true;
+  $("print").disabled = true;
+  $("preview").hidden = true;
+}
+select.addEventListener("change", updateDate);
+$("name").addEventListener("input", updateDate);
+updateDate();
+
+function createNameImage(name) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1600;
+  canvas.height = 180;
+  const ctx = canvas.getContext("2d");
+
+  ctx.direction = "rtl";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#173d58";
+
+  let fontSize = 76;
+  do {
+    ctx.font = `bold ${fontSize}px Tajawal, Arial`;
+    if (ctx.measureText(name).width <= 1450) break;
+    fontSize -= 2;
+  } while (fontSize > 28);
+
+  ctx.fillText(name, 800, 90);
+  return canvas.toDataURL("image/png");
+}
+
+async function generateCertificate() {
+  const name = $("name").value.trim().replace(/\s+/g, " ");
+  const n = Number(select.value);
+
+  if (name.length < 3) {
+    $("status").textContent = "يرجى إدخال الاسم الكامل.";
+    return;
+  }
+
+  if (!SCRIPT_URL.startsWith("https://script.google.com/macros/s/")) {
+    $("status").textContent =
+      "يجب أولاً ربط الموقع بـ Google Apps Script.";
+    return;
+  }
+
+  $("generate").disabled = true;
+  $("status").textContent = "جارٍ تجهيز الشهادة...";
+
+  try {
+    await document.fonts.ready;
+
+    const filename =
+      `شهادة_حضور_الندوة_${String(n).padStart(2, "0")}.pdf`;
+
+    const response = await fetch("certificates/" + filename);
+    if (!response.ok) throw Error("لم يتم العثور على ملف الشهادة.");
+
+    const bytes = await response.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+    const page = pdf.getPages()[0];
+
+    const { width, height } = page.getSize();
+    const image = await pdf.embedPng(createNameImage(name));
+
+    // Position of the name on the original certificate
+    const w = width * 0.63;
+    const h = w * 180 / 1600;
+
+    page.drawImage(image, {
+      x: (width - w) / 2,
+      y: height * 0.538 - h / 2,
+      width: w,
+      height: h
+    });
+
+    const result = await pdf.save();
+    pdfBlob = new Blob([result], {type: "application/pdf"});
+
+    // Display certificate preview
+    const pdfView = await pdfjsLib.getDocument({
+      data: new Uint8Array(result)
+    }).promise;
+
+    const firstPage = await pdfView.getPage(1);
+    const viewport = firstPage.getViewport({scale: 1.5});
+    const canvas = $("preview");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    await firstPage.render({
+      canvasContext: canvas.getContext("2d"),
+      viewport
+    }).promise;
+
+    canvas.hidden = false;
+
+    // Record the participant in Google Sheets
+    const id = crypto.randomUUID();
+    const form = new URLSearchParams({
+      name: name,
+      seminar: String(n),
+      id: id
+    });
+
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: form
+    });
+
+    $("download").disabled = false;
+    $("print").disabled = false;
+    $("status").textContent =
+      "الشهادة جاهزة للتحميل. تم إرسال طلب تسجيل الاسم. يرجى التأكد من وصوله لسجل المشاركين.";
+
+  } catch (error) {
+    $("status").textContent =
+      "حدث خطأ: " + error.message;
+  } finally {
+    $("generate").disabled = false;
+  }
+}
+
+$("generate").addEventListener("click", generateCertificate);
+
+$("download").addEventListener("click", () => {
+  if (!pdfBlob) return;
+  const url = URL.createObjectURL(pdfBlob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `شهادة_حضور_الندوة_${select.value}.pdf`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+});
+
+$("print").addEventListener("click", () => {
+  if (!pdfBlob) return;
+  const url = URL.createObjectURL(pdfBlob);
+  window.open(url, "_blank");
+});
+</script>
+</body>
+</html>
