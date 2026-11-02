@@ -206,10 +206,14 @@ async function generateCertificate() {
   try {
     await document.fonts.ready;
 
-    const filename =
-      `شهادة_حضور_الندوة_${String(n).padStart(2, "0")}.pdf`;
 
-    const response = await fetch("certificates/" + filename);
+const filename =
+  `${String(n).padStart(2, "0")}_شهادة_حضور_الندوة.pdf`;
+
+const response = await fetch(
+  encodeURIComponent(filename)
+);
+
     if (!response.ok) throw Error("لم يتم العثور على ملف الشهادة.");
 
     const bytes = await response.arrayBuffer();
