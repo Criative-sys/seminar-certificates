@@ -236,9 +236,36 @@ const response = await fetch(
     pdfBlob = new Blob([result], {type: "application/pdf"});
 
     // Display certificate preview
-    const pdfView = await pdfjsLib.getDocument({
-      data: new Uint8Array(result)
-    }).promise;
+
+    // Display certificate preview using browser PDF viewer
+    const previewCanvas = $("preview");
+    previewCanvas.hidden = true;
+
+    let pdfFrame = document.getElementById("pdfPreviewFrame");
+
+    if (!pdfFrame) {
+      pdfFrame = document.createElement("iframe");
+      pdfFrame.id = "pdfPreviewFrame";
+      pdfFrame.style.width = "100%";
+      pdfFrame.style.height = "520px";
+      pdfFrame.style.border = "1px solid #ddd";
+      pdfFrame.style.borderRadius = "10px";
+      pdfFrame.style.marginTop = "20px";
+      previewCanvas.parentNode.insertBefore(
+        pdfFrame,
+        previewCanvas
+      );
+    }
+
+    if (window.certificatePreviewURL) {
+      URL.revokeObjectURL(window.certificatePreviewURL);
+    }
+
+    window.certificatePreviewURL =
+      URL.createObjectURL(pdfBlob);
+
+    pdfFrame.src = window.certificatePreviewURL;
+
 
     const firstPage = await pdfView.getPage(1);
     const viewport = firstPage.getViewport({scale: 1.5});
