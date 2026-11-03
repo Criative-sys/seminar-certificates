@@ -1,64 +1,302 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>إصدار شهادات الحضور | جمعية الاجتماعيين</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;font-family:Tajawal,Arial,sans-serif;color:#243633;background-color:#fcfaf5;background-image:linear-gradient(30deg,transparent 47%,#e9e6db55 49%,#e9e6db55 51%,transparent 53%),linear-gradient(150deg,transparent 47%,#e9e6db55 49%,#e9e6db55 51%,transparent 53%);background-size:90px 105px}
-.site-header{background:#fffdf9;border-bottom:1px solid #e9e5d8;padding:22px 20px 20px}
-.brand-bar{max-width:980px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand-logo{width:155px;height:90px;object-fit:contain}
-.book-logo{width:210px}
-.brand-center{text-align:center;flex:1;min-width:0}
-.brand-center .eyebrow{font-size:13px;font-weight:700;color:#7c735d;margin:0 0 8px}
-.brand-center h1{font-size:clamp(23px,3vw,33px);color:#184f40;line-height:1.4;margin:0;font-weight:800}
-.brand-center p{color:#6b6e68;font-size:14px;line-height:1.6;margin:8px 0 0}
-.gold-line{background:#b99b56;width:72px;height:3px;border-radius:99px;margin:16px auto 0}
-main{max-width:760px;margin:32px auto 55px;padding:0 16px}
-.card{background:#fff;border:1px solid #e4e9e1;border-radius:20px;padding:34px;box-shadow:0 12px 35px #193e2810;position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#b99b56,#278263,#b99b56)}
-.card-top{text-align:center;padding-bottom:18px;border-bottom:1px solid #ebece8;margin-bottom:23px}
-.kicker{display:inline-block;background:#f0f6f1;color:#216a50;border-radius:20px;padding:8px 17px;font-weight:700;font-size:13px}
-.card-top h2{color:#184f40;font-size:26px;margin:15px 0 5px}
-.card-top p{font-size:15px;color:#68736d;margin:0}
-label{display:block;font-weight:700;margin:17px 0 9px;font-size:16px}
-input,select{width:100%;padding:15px 16px;font:inherit;font-size:17px;background:#fff;border:1px solid #d4ddd5;border-radius:11px;outline:none}
-input:focus,select:focus{border-color:#248566;box-shadow:0 0 0 3px #2e91641c}
-#seminarTitle{font-size:19px;line-height:1.8;color:#214c3e;margin:3px 0 0;padding:17px;border-radius:12px;background:#f7f9f6;border:1px solid #e2e8e0;text-align:center}
-.date{text-align:center;color:#857044;font-size:15px;font-weight:700;margin:12px 0 19px}
-.note{font-size:13px;color:#798179;margin:8px 0 2px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-button{font:inherit;border:0;border-radius:10px;padding:14px 20px;cursor:pointer;font-weight:700;font-size:16px;background:#1e684e;color:#fff}
-button:disabled{opacity:.45;cursor:default}
-#generate{flex:1 1 100%}
-#download{background:#ad8b49;flex:1}
-#print{background:#edf3ef;color:#19563f;flex:1}
-#status{text-align:center;font-size:14px;line-height:1.7;color:#35634d;margin-top:16px}
-/* Real responsive certificate preview: a PNG of the original PDF + the participant name. */
-#certificatePreview{position:relative;width:100%;margin-top:20px;border:1px solid #e2ded3;border-radius:12px;overflow:hidden;background:#f7f2e6;line-height:0}
-#templatePreview{display:block;width:100%;height:auto}
-#namePreview{position:absolute;width:63%;height:auto;left:50%;top:46.2%;transform:translate(-50%,-50%);pointer-events:none}
-footer{text-align:center;font-size:13px;color:#7c807b;margin:30px 14px}
-@media(max-width:650px){.site-header{padding:18px 12px}.brand-bar{gap:8px}.brand-logo{width:72px;height:68px}.book-logo{width:96px}.brand-center .eyebrow{font-size:10px}.brand-center h1{font-size:19px}.brand-center p{font-size:11px}.card{padding:22px 17px}.card-top h2{font-size:22px}main{margin-top:22px}.actions button{font-size:14px;padding:13px 10px}}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: Tajawal, Arial, sans-serif;
+  color: #243633;
+  background-color: #fcfaf5;
+  background-image:
+    linear-gradient(30deg, transparent 47%, #e9e6db55 49%, #e9e6db55 51%, transparent 53%),
+    linear-gradient(150deg, transparent 47%, #e9e6db55 49%, #e9e6db55 51%, transparent 53%);
+  background-size: 90px 105px;
+}
+
+.site-header {
+  background: #fffdf9;
+  border-bottom: 1px solid #e9e5d8;
+  padding: 22px 20px 20px;
+}
+
+.brand-bar {
+  max-width: 980px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand-logo {
+  width: 155px;
+  height: 90px;
+  object-fit: contain;
+}
+
+.book-logo { width: 210px; }
+
+.brand-center {
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7c735d;
+  margin: 0 0 8px;
+}
+
+.brand-center h1 {
+  font-size: clamp(23px, 3vw, 33px);
+  color: #184f40;
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 800;
+}
+
+.brand-center p {
+  color: #6b6e68;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+.gold-line {
+  background: #b99b56;
+  width: 72px;
+  height: 3px;
+  border-radius: 99px;
+  margin: 16px auto 0;
+}
+
+main {
+  max-width: 760px;
+  margin: 32px auto 55px;
+  padding: 0 16px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e4e9e1;
+  border-radius: 20px;
+  padding: 34px;
+  box-shadow: 0 12px 35px #193e2810;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background: linear-gradient(90deg, #b99b56, #278263, #b99b56);
+}
+
+.card-top {
+  text-align: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #ebece8;
+  margin-bottom: 23px;
+}
+
+.kicker {
+  display: inline-block;
+  background: #f0f6f1;
+  color: #216a50;
+  border-radius: 20px;
+  padding: 8px 17px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.card-top h2 {
+  color: #184f40;
+  font-size: 26px;
+  margin: 15px 0 5px;
+}
+
+.card-top p {
+  font-size: 15px;
+  color: #68736d;
+  margin: 0;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin: 17px 0 9px;
+  font-size: 16px;
+}
+
+input, select {
+  width: 100%;
+  padding: 15px 16px;
+  font: inherit;
+  font-size: 17px;
+  background: #fff;
+  border: 1px solid #d4ddd5;
+  border-radius: 11px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #248566;
+  box-shadow: 0 0 0 3px #2e91641c;
+}
+
+#seminarTitle {
+  font-size: 19px;
+  line-height: 1.8;
+  color: #214c3e;
+  margin: 3px 0 0;
+  padding: 17px;
+  border-radius: 12px;
+  background: #f7f9f6;
+  border: 1px solid #e2e8e0;
+  text-align: center;
+}
+
+.date {
+  text-align: center;
+  color: #857044;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 12px 0 19px;
+}
+
+.note {
+  font-size: 13px;
+  color: #798179;
+  margin: 8px 0 2px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+button {
+  font: inherit;
+  border: 0;
+  border-radius: 10px;
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  background: #1e684e;
+  color: #fff;
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+#generate { flex: 1 1 100%; }
+#download { background: #ad8b49; flex: 1; }
+#print {
+  background: #edf3ef;
+  color: #19563f;
+  flex: 1;
+}
+
+#status {
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #35634d;
+  margin-top: 16px;
+}
+
+/* Responsive certificate preview */
+#certificatePreview {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+  border: 1px solid #e2ded3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f7f2e6;
+  line-height: 0;
+}
+
+#templatePreview {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#namePreview {
+  position: absolute;
+  width: 63%;
+  height: auto;
+  left: 50%;
+  top: 46.2%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+footer {
+  text-align: center;
+  font-size: 13px;
+  color: #7c807b;
+  margin: 30px 14px;
+}
+
+@media (max-width: 650px) {
+  .site-header { padding: 18px 12px; }
+  .brand-bar { gap: 8px; }
+  .brand-logo { width: 72px; height: 68px; }
+  .book-logo { width: 96px; }
+  .eyebrow { font-size: 10px; }
+  .brand-center h1 { font-size: 19px; }
+  .brand-center p { font-size: 11px; }
+  .card { padding: 22px 17px; }
+  .card-top h2 { font-size: 22px; }
+  main { margin-top: 22px; }
+  .actions button {
+    font-size: 14px;
+    padding: 13px 10px;
+  }
+}
 </style>
 </head>
+
 <body>
 <header class="site-header">
   <div class="brand-bar">
-    <img class="brand-logo" src="./logo-soc.png" alt="شعار جمعية الاجتماعيين">
+    <img class="brand-logo"
+         src="./logo-soc.png"
+         alt="شعار جمعية الاجتماعيين">
+
     <div class="brand-center">
       <p class="eyebrow">البرنامج الثقافي | 2026</p>
       <h1>إصدار شهادة حضور</h1>
       <p>البرنامج الثقافي المصاحب لمعرض الشارقة الدولي للكتاب</p>
       <div class="gold-line"></div>
     </div>
-    <img class="brand-logo book-logo" src="./logo-bookfair.png" alt="شعار معرض الشارقة الدولي للكتاب">
+
+    <img class="brand-logo book-logo"
+         src="./logo-bookfair.png"
+         alt="شعار معرض الشارقة الدولي للكتاب">
   </div>
 </header>
+
 <main>
   <section class="card">
     <div class="card-top">
@@ -66,30 +304,47 @@ footer{text-align:center;font-size:13px;color:#7c807b;margin:30px 14px}
       <h2>شهادة حضور الندوة</h2>
       <p>أدخل اسمك لتحصل على شهادة الحضور الخاصة بك</p>
     </div>
+
     <label for="seminar">عنوان الندوة</label>
     <h2 id="seminarTitle" hidden></h2>
     <select id="seminar"></select>
+
     <div class="date" id="date"></div>
+
     <label for="name">الاسم الكامل للمشارك</label>
-    <input id="name" maxlength="90" autocomplete="name" placeholder="اكتب اسمك كما ترغب بظهوره في الشهادة">
-    <p class="note">يرجى التأكد من كتابة الاسم بشكل صحيح قبل إصدار الشهادة.</p>
+    <input id="name"
+           maxlength="90"
+           autocomplete="name"
+           placeholder="اكتب اسمك كما ترغب بظهوره في الشهادة">
+
+    <p class="note">
+      يرجى التأكد من كتابة الاسم بشكل صحيح قبل إصدار الشهادة.
+    </p>
+
     <div class="actions">
       <button id="generate">إصدار الشهادة</button>
       <button id="download" disabled>تحميل الشهادة PDF</button>
       <button id="print" disabled>طباعة الشهادة</button>
     </div>
+
     <p id="status" role="status" aria-live="polite"></p>
+
     <div id="certificatePreview" hidden>
-      <img id="templatePreview" alt="معاينة تصميم شهادة الحضور">
+      <img id="templatePreview" alt="معاينة شهادة الحضور">
       <img id="namePreview" alt="" aria-hidden="true">
     </div>
   </section>
 </main>
+
 <footer>جمعية الاجتماعيين © 2026</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
 <script>
-const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzhuteOdebAvZSwOKE6nDzCFcKQuRELtrDteLnVvFngPZR8JlIFt6Wlr-UU21TzTzYGmw/exec";
-const titles=[
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbzhuteOdebAvZSwOKE6nDzCFcKQuRELtrDteLnVvFngPZR8JlIFt6Wlr-UU21TzTzYGmw/exec";
+
+const titles = [
   "الأسرة المرنة... من التفهم إلى التكيف مع متغيرات العصر",
   "تربية الأبناء في عصر الذكاء الاصطناعي",
   "اكتشاف الموهبة وبناء شخصية الأبناء",
@@ -102,126 +357,231 @@ const titles=[
   "الخصوصية الأسرية وحماية الأبناء في العصر الرقمي",
   "جودة الحياة والوقاية الاجتماعية نحو مجتمع أكثر أمانًا"
 ];
-const $=id=>document.getElementById(id);
-const select=$("seminar");
-let pdfBlob=null;
-titles.forEach((title,i)=>{
-  const option=document.createElement("option");
-  option.value=String(i+1);
-  option.textContent=`الندوة ${i+1}: ${title}`;
+
+const $ = id => document.getElementById(id);
+const select = $("seminar");
+
+let pdfBlob = null;
+
+// Build seminar options
+titles.forEach((title, i) => {
+  const option = document.createElement("option");
+  option.value = String(i + 1);
+  option.textContent = `الندوة ${i + 1}: ${title}`;
   select.appendChild(option);
 });
-const p=new URLSearchParams(location.search).get("seminar");
-const seminarNumber=p===null?null:Number(p);
-if(seminarNumber!==null && Number.isInteger(seminarNumber) && seminarNumber>=1 && seminarNumber<=11){
-  select.value=String(seminarNumber);
-  select.hidden=true;
-  $("seminarTitle").textContent=titles[seminarNumber-1];
-  $("seminarTitle").hidden=false;
+
+// Select the correct seminar from the page URL
+const params = new URLSearchParams(location.search);
+const param = params.get("seminar");
+const chosen = param === null ? null : Number(param);
+
+if (
+  chosen !== null &&
+  Number.isInteger(chosen) &&
+  chosen >= 1 &&
+  chosen <= 11
+) {
+  select.value = String(chosen);
+  select.hidden = true;
+
+  $("seminarTitle").textContent = titles[chosen - 1];
+  $("seminarTitle").hidden = false;
 }
-function reset(){
-  const n=Number(select.value);
-  $("date").textContent=`${n+4} نوفمبر 2026`;
-  pdfBlob=null;
-  $("download").disabled=true;
-  $("print").disabled=true;
-  $("status").textContent="";
-  $("certificatePreview").hidden=true;
+
+function reset() {
+  const n = Number(select.value);
+
+  $("date").textContent = `${n + 4} نوفمبر 2026`;
+  pdfBlob = null;
+
+  $("download").disabled = true;
+  $("print").disabled = true;
+  $("status").textContent = "";
+
+  $("certificatePreview").hidden = true;
   $("templatePreview").removeAttribute("src");
   $("namePreview").removeAttribute("src");
 }
-select.addEventListener("change",reset);
-$("name").addEventListener("input",reset);
+
+select.addEventListener("change", reset);
+$("name").addEventListener("input", reset);
 reset();
 
-function nameImage(name){
-  const canvas=document.createElement("canvas");
-  canvas.width=1600;
-  canvas.height=180;
-  const ctx=canvas.getContext("2d");
-  ctx.direction="rtl";
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
-  ctx.fillStyle="#173d58";
-  let size=76;
-  do{
-    ctx.font=`bold ${size}px Tajawal, Arial`;
-    if(ctx.measureText(name).width<=1450)break;
-    size-=2;
-  }while(size>28);
-  ctx.fillText(name,800,90);
+// Convert Arabic participant name into PNG
+function nameImage(name) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1600;
+  canvas.height = 180;
+
+  const ctx = canvas.getContext("2d");
+  ctx.direction = "rtl";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#173d58";
+
+  let size = 76;
+
+  do {
+    ctx.font = `bold ${size}px Tajawal, Arial`;
+
+    if (ctx.measureText(name).width <= 1450) break;
+    size -= 2;
+
+  } while (size > 28);
+
+  ctx.fillText(name, 800, 90);
+
   return canvas.toDataURL("image/png");
 }
 
-async function generate(){
-  const name=$("name").value.trim().replace(/\s+/g," ");
-  const n=Number(select.value);
-  if(name.length<3){$("status").textContent="يرجى إدخال الاسم الكامل.";return;}
-  if(!window.PDFLib){$("status").textContent="تعذر تحميل مكتبة إنشاء الشهادات، يرجى تحديث الصفحة.";return;}
-  if(!SCRIPT_URL.startsWith("https://script.google.com/macros/s/")){
-    $("status").textContent="يرجى ضبط رابط Google Apps Script أولاً.";return;
-  }
-  $("generate").disabled=true;
-  $("status").textContent="جارٍ تجهيز الشهادة...";
-  try{
-    await document.fonts.ready;
-    const filename=`شهادة_حضور_الندوة_${String(n).padStart(2,"0")}.pdf`;
-    const response=await fetch("./"+encodeURIComponent(filename));
-    if(!response.ok)throw Error("لم يتم العثور على ملف الشهادة.");
-    const pdf=await PDFLib.PDFDocument.load(await response.arrayBuffer());
-    const page=pdf.getPages()[0];
-    const {width,height}=page.getSize();
-    const namePng=nameImage(name);
-    const img=await pdf.embedPng(namePng);
-    const w=width*.63,h=w*180/1600;
-    page.drawImage(img,{x:(width-w)/2,y:height*.538-h/2,width:w,height:h});
-    pdfBlob=new Blob([await pdf.save()],{type:"application/pdf"});
+// Generate certificate
+async function generate() {
+  const name = $("name").value.trim().replace(/\s+/g, " ");
+  const n = Number(select.value);
 
-    // Mobile-friendly preview with the correct Arabic text from original PDF rendered as image.
-    const previewSrc=`./previews/preview-${String(n).padStart(2,"0")}.png`;
-    $("templatePreview").src=previewSrc;
-    $("namePreview").src=namePng;
-    $("certificatePreview").hidden=false;
-    $("templatePreview").onerror=()=>{
-      $("certificatePreview").hidden=true;
-      $("status").textContent="الشهادة جاهزة للتحميل، لكن صورة المعاينة غير موجودة. تأكد من رفع مجلد previews إلى GitHub.";
+  if (name.length < 3) {
+    $("status").textContent = "يرجى إدخال الاسم الكامل.";
+    return;
+  }
+
+  if (!window.PDFLib) {
+    $("status").textContent =
+      "تعذر تحميل مكتبة إنشاء الشهادات.";
+    return;
+  }
+
+  $("generate").disabled = true;
+  $("status").textContent = "جارٍ تجهيز الشهادة...";
+
+  try {
+    await document.fonts.ready;
+
+    // Load original PDF certificate
+    const filename =
+      `شهادة_حضور_الندوة_${String(n).padStart(2, "0")}.pdf`;
+
+    const response = await fetch(
+      "./" + encodeURIComponent(filename)
+    );
+
+    if (!response.ok) {
+      throw Error("لم يتم العثور على ملف الشهادة.");
+    }
+
+    const pdf = await PDFLib.PDFDocument.load(
+      await response.arrayBuffer()
+    );
+
+    const page = pdf.getPages()[0];
+    const { width, height } = page.getSize();
+
+    // Add name to the original PDF
+    const namePng = nameImage(name);
+    const image = await pdf.embedPng(namePng);
+
+    const w = width * 0.63;
+    const h = w * 180 / 1600;
+
+    page.drawImage(image, {
+      x: (width - w) / 2,
+      y: height * 0.538 - h / 2,
+      width: w,
+      height: h
+    });
+
+    pdfBlob = new Blob(
+      [await pdf.save()],
+      { type: "application/pdf" }
+    );
+
+    // Responsive preview for mobile and desktop
+    // The template PNG has the correct Arabic formatting.
+    const previewFile =
+      `./previews/preview-${String(n).padStart(2, "0")}.png`;
+
+    $("templatePreview").src = previewFile;
+    $("namePreview").src = namePng;
+
+    $("certificatePreview").hidden = false;
+
+    $("templatePreview").onerror = () => {
+      $("certificatePreview").hidden = true;
+      $("status").textContent =
+        "الشهادة جاهزة، لكن صورة المعاينة غير موجودة.";
     };
 
-    const form=new URLSearchParams({name,seminar:String(n),id:crypto.randomUUID()});
-    // no-cors sends the request but does not let the browser confirm Google Sheets saved it.
-    try{
-      await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:form});
-    }catch(error){
-      console.warn("Google Sheets logging request failed",error);
-      $("status").textContent="الشهادة جاهزة، لكن تعذّر إرسال طلب التسجيل إلى Google Sheets.";
+    // Record participant in Google Sheets
+    const form = new URLSearchParams({
+      name: name,
+      seminar: String(n),
+      id: crypto.randomUUID()
+    });
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: form
+      });
+    } catch (error) {
+      console.warn("Google Sheets request failed", error);
+      $("status").textContent =
+        "الشهادة جاهزة، لكن تعذر إرسال طلب التسجيل.";
     }
-    $("download").disabled=false;
-    $("print").disabled=false;
-    if(!$("status").textContent || $("status").textContent==="جارٍ تجهيز الشهادة..."){
-      $("status").textContent="الشهادة جاهزة للتحميل. يرجى التأكد من تسجيل الاسم في Google Sheets.";
+
+    $("download").disabled = false;
+    $("print").disabled = false;
+
+    if (
+      !$("status").textContent ||
+      $("status").textContent === "جارٍ تجهيز الشهادة..."
+    ) {
+      $("status").textContent =
+        "الشهادة جاهزة للتحميل. يرجى التأكد من تسجيل الاسم في Google Sheets.";
     }
-  }catch(error){
-    $("status").textContent="حدث خطأ: "+error.message;
-  }finally{$("generate").disabled=false;}
+
+  } catch (error) {
+    $("status").textContent =
+      "حدث خطأ: " + error.message;
+  } finally {
+    $("generate").disabled = false;
+  }
 }
-$("generate").addEventListener("click",generate);
-$("download").addEventListener("click",()=>{
-  if(!pdfBlob)return;
-  const url=URL.createObjectURL(pdfBlob);
-  const a=document.createElement("a");
-  a.href=url;
-  a.download=`شهادة_حضور_الندوة_${select.value}.pdf`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),60000);
+
+$("generate").addEventListener("click", generate);
+
+// Download PDF
+$("download").addEventListener("click", () => {
+  if (!pdfBlob) return;
+
+  const url = URL.createObjectURL(pdfBlob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download =
+    `شهادة_حضور_الندوة_${select.value}.pdf`;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 });
-$("print").addEventListener("click",()=>{
-  if(!pdfBlob)return;
-  const url=URL.createObjectURL(pdfBlob);
-  const tab=window.open(url,"_blank");
-  if(!tab){$("status").textContent="يرجى السماح بفتح نافذة جديدة للطباعة، أو تحميل ملف PDF أولاً.";}
-  setTimeout(()=>URL.revokeObjectURL(url),120000);
+
+// Print PDF
+$("print").addEventListener("click", () => {
+  if (!pdfBlob) return;
+
+  const url = URL.createObjectURL(pdfBlob);
+  const tab = window.open(url, "_blank");
+
+  if (!tab) {
+    $("status").textContent =
+      "يرجى السماح بفتح نافذة جديدة للطباعة، أو تحميل ملف PDF أولاً.";
+  }
+
+  setTimeout(() => URL.revokeObjectURL(url), 120000);
 });
 </script>
 </body>
