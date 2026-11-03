@@ -57,9 +57,9 @@ body {
 }
 
 .brand-center {
-  text-align: center;
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .eyebrow {
@@ -92,7 +92,7 @@ body {
   margin: 16px auto 0;
 }
 
-/* MAIN CONTENT */
+/* MAIN */
 
 main {
   max-width: 760px;
@@ -101,7 +101,7 @@ main {
 }
 
 .card {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e4e9e1;
   border-radius: 20px;
   padding: 34px;
@@ -167,7 +167,7 @@ select {
   padding: 15px 16px;
   font: inherit;
   font-size: 17px;
-  background: white;
+  background: #fff;
   border: 1px solid #d4ddd5;
   border-radius: 11px;
   outline: none;
@@ -223,7 +223,7 @@ button {
   font-weight: 700;
   font-size: 16px;
   background: #1e684e;
-  color: #ffffff;
+  color: #fff;
 }
 
 button:hover:not(:disabled) {
@@ -258,15 +258,47 @@ button:disabled {
   margin-top: 16px;
 }
 
-/* CERTIFICATE PREVIEW - DESKTOP ONLY */
+/* PDF PREVIEW */
+
+.preview-section {
+  margin-top: 22px;
+}
+
+.preview-title {
+  text-align: center;
+  color: #184f40;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.pdf-container {
+  width: 100%;
+  overflow: hidden;
+  background: #f8f5ed;
+  border: 1px solid #e0ded6;
+  border-radius: 12px;
+}
 
 #pdfPreviewFrame {
   display: block;
   width: 100%;
-  height: 510px;
-  border: 1px solid #dfe5dc;
-  border-radius: 12px;
-  margin-top: 20px;
+  height: 480px;
+  border: 0;
+}
+
+.preview-open {
+  width: 100%;
+  margin-top: 10px;
+  background: #f0f6f1;
+  color: #185d46;
+  border: 1px solid #d7e5dc;
+}
+
+footer {
+  text-align: center;
+  font-size: 13px;
+  color: #7c807b;
+  margin: 30px 14px;
 }
 
 /* MOBILE */
@@ -319,27 +351,17 @@ button:disabled {
     padding: 13px 10px;
   }
 
-  /* Hide cropped PDF preview on phones */
   #pdfPreviewFrame {
-    display: none !important;
+    height: 240px;
   }
 
 }
-
-footer {
-  text-align: center;
-  font-size: 13px;
-  color: #7c807b;
-  margin: 30px 14px;
-}
-
 </style>
 </head>
 
 <body>
 
 <header class="site-header">
-
   <div class="brand-bar">
 
     <img
@@ -349,15 +371,13 @@ footer {
     >
 
     <div class="brand-center">
-      <p class="eyebrow">
-        البرنامج الثقافي | 2026
-      </p>
+      <p class="eyebrow">البرنامج الثقافي | 2026</p>
 
       <h1>إصدار شهادة حضور</h1>
 
       <p>
-        البرنامج الثقافي المصاحب لمعرض
-        الشارقة الدولي للكتاب
+        البرنامج الثقافي المصاحب
+        لمعرض الشارقة الدولي للكتاب
       </p>
 
       <div class="gold-line"></div>
@@ -370,40 +390,25 @@ footer {
     >
 
   </div>
-
 </header>
 
 <main>
-
   <section class="card">
 
     <div class="card-top">
-
-      <span class="kicker">
-        شهادات الندوات
-      </span>
-
+      <span class="kicker">شهادات الندوات</span>
       <h2>شهادة حضور الندوة</h2>
-
-      <p>
-        أدخل اسمك لتحصل على شهادة الحضور الخاصة بك
-      </p>
-
+      <p>أدخل اسمك لتحصل على شهادة الحضور الخاصة بك</p>
     </div>
 
-    <label for="seminar">
-      عنوان الندوة
-    </label>
+    <label for="seminar">عنوان الندوة</label>
 
     <h2 id="seminarTitle" hidden></h2>
-
     <select id="seminar"></select>
 
     <div class="date" id="date"></div>
 
-    <label for="name">
-      الاسم الكامل للمشارك
-    </label>
+    <label for="name">الاسم الكامل للمشارك</label>
 
     <input
       id="name"
@@ -418,34 +423,36 @@ footer {
     </p>
 
     <div class="actions">
-
-      <button id="generate">
-        إصدار الشهادة
-      </button>
-
-      <button id="download" disabled>
-        تحميل الشهادة PDF
-      </button>
-
-      <button id="print" disabled>
-        طباعة الشهادة
-      </button>
-
+      <button id="generate">إصدار الشهادة</button>
+      <button id="download" disabled>تحميل الشهادة PDF</button>
+      <button id="print" disabled>طباعة الشهادة</button>
     </div>
 
-    <p
-      id="status"
-      role="status"
-      aria-live="polite"
-    ></p>
+    <p id="status" role="status" aria-live="polite"></p>
+
+    <div id="previewSection" class="preview-section" hidden>
+      <p class="preview-title">معاينة شهادة الحضور</p>
+
+      <div class="pdf-container">
+        <iframe
+          id="pdfPreviewFrame"
+          title="معاينة شهادة الحضور"
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <button
+        id="openPreview"
+        class="preview-open"
+        type="button">
+        عرض الشهادة بالحجم الكامل
+      </button>
+    </div>
 
   </section>
-
 </main>
 
-<footer>
-  جمعية الاجتماعيين © 2026
-</footer>
+<footer>جمعية الاجتماعيين © 2026</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 
@@ -459,29 +466,17 @@ const SCRIPT_URL =
 /* SEMINARS */
 
 const titles = [
-
   "الأسرة المرنة... من التفهم إلى التكيف مع متغيرات العصر",
-
   "تربية الأبناء في عصر الذكاء الاصطناعي",
-
   "اكتشاف الموهبة وبناء شخصية الأبناء",
-
   "بناء الوعي المجتمعي لمواجهة تحديات المستقبل... الإمارات نموذجًا",
-
   "الأسرة الإماراتية وتعزيز الأمن الاجتماعي والفكري",
-
   "كبار المواطنين... ذاكرة المجتمع ورعاية الأسرة",
-
   "استشراف الحياة المجتمعية بين التحولات الكبرى ومتطلبات الاستقرار",
-
   "الذكاء الاصطناعي ومستقبل العقل والسلوك الإنساني",
-
   "كيف تعيد الخوارزميات تشكيل العلاقات الإنسانية؟",
-
   "الخصوصية الأسرية وحماية الأبناء في العصر الرقمي",
-
   "جودة الحياة والوقاية الاجتماعية نحو مجتمع أكثر أمانًا"
-
 ];
 
 const $ = id => document.getElementById(id);
@@ -490,31 +485,25 @@ const select = $("seminar");
 
 let pdfBlob = null;
 let previewURL = null;
+let generating = false;
 
-/* LOAD SEMINARS */
+/* BUILD SEMINAR OPTIONS */
 
-titles.forEach((title, i) => {
-
+titles.forEach((title, index) => {
   const option = document.createElement("option");
 
-  option.value = String(i + 1);
-
+  option.value = String(index + 1);
   option.textContent =
-    `الندوة ${i + 1}: ${title}`;
+    `الندوة ${index + 1}: ${title}`;
 
   select.appendChild(option);
-
 });
 
-/* GET SEMINAR FROM QR CODE URL */
+/* READ SEMINAR FROM QR CODE URL */
 
-const params =
-  new URLSearchParams(location.search);
-
+const params = new URLSearchParams(location.search);
 const param = params.get("seminar");
-
-const chosen =
-  param === null ? null : Number(param);
+const chosen = param === null ? null : Number(param);
 
 if (
   chosen !== null &&
@@ -522,61 +511,43 @@ if (
   chosen >= 1 &&
   chosen <= 11
 ) {
-
   select.value = String(chosen);
-
   select.hidden = true;
 
-  $("seminarTitle").textContent =
-    titles[chosen - 1];
-
+  $("seminarTitle").textContent = titles[chosen - 1];
   $("seminarTitle").hidden = false;
-
 }
 
-/* RESET */
+/* RESET CERTIFICATE */
 
 function reset() {
-
-  const n = Number(select.value);
-
   $("date").textContent =
-    `${n + 4} نوفمبر 2026`;
+    `${Number(select.value) + 4} نوفمبر 2026`;
 
   pdfBlob = null;
 
   $("download").disabled = true;
-
   $("print").disabled = true;
-
   $("status").textContent = "";
 
-  const frame = $("pdfPreviewFrame");
-
-  if (frame) {
-    frame.hidden = true;
-    frame.removeAttribute("src");
-  }
+  $("previewSection").hidden = true;
+  $("pdfPreviewFrame").removeAttribute("src");
 
   if (previewURL) {
     URL.revokeObjectURL(previewURL);
     previewURL = null;
   }
-
 }
 
 select.addEventListener("change", reset);
-
 $("name").addEventListener("input", reset);
 
 reset();
 
-/* CREATE ARABIC NAME IMAGE */
+/* CREATE NAME IMAGE FOR THE PDF */
 
 function nameImage(name) {
-
-  const canvas =
-    document.createElement("canvas");
+  const canvas = document.createElement("canvas");
 
   canvas.width = 1600;
   canvas.height = 180;
@@ -591,58 +562,47 @@ function nameImage(name) {
   let size = 76;
 
   do {
+    ctx.font = `bold ${size}px Tajawal, Arial`;
 
-    ctx.font =
-      `bold ${size}px Tajawal, Arial`;
-
-    if (
-      ctx.measureText(name).width <= 1450
-    ) break;
+    if (ctx.measureText(name).width <= 1450) {
+      break;
+    }
 
     size -= 2;
-
   } while (size > 28);
 
   ctx.fillText(name, 800, 90);
 
   return canvas.toDataURL("image/png");
-
 }
 
 /* GENERATE CERTIFICATE */
 
 async function generate() {
+  if (generating) return;
 
-  const name =
-    $("name").value.trim().replace(/\s+/g, " ");
-
+  const name = $("name").value.trim().replace(/\s+/g, " ");
   const n = Number(select.value);
 
   if (name.length < 3) {
-
     $("status").textContent =
       "يرجى إدخال الاسم الكامل.";
-
     return;
-
   }
 
   if (!window.PDFLib) {
-
     $("status").textContent =
-      "تعذر تحميل مكتبة إنشاء الشهادات.";
-
+      "تعذر تحميل مكتبة إنشاء الشهادة.";
     return;
-
   }
 
+  generating = true;
   $("generate").disabled = true;
 
   $("status").textContent =
     "جارٍ تجهيز الشهادة...";
 
   try {
-
     await document.fonts.ready;
 
     /* LOAD ORIGINAL PDF */
@@ -655,9 +615,7 @@ async function generate() {
     );
 
     if (!response.ok) {
-      throw Error(
-        "لم يتم العثور على ملف الشهادة."
-      );
+      throw new Error("لم يتم العثور على ملف الشهادة.");
     }
 
     const pdf = await PDFLib.PDFDocument.load(
@@ -665,31 +623,20 @@ async function generate() {
     );
 
     const page = pdf.getPages()[0];
+    const { width, height } = page.getSize();
 
-    const { width, height } =
-      page.getSize();
+    /* ADD ATTENDEE NAME */
 
-    /* ADD PARTICIPANT NAME */
-
-    const namePng = nameImage(name);
-
-    const image =
-      await pdf.embedPng(namePng);
+    const image = await pdf.embedPng(nameImage(name));
 
     const w = width * 0.63;
-
     const h = w * 180 / 1600;
 
     page.drawImage(image, {
-
       x: (width - w) / 2,
-
       y: height * 0.538 - h / 2,
-
       width: w,
-
       height: h
-
     });
 
     const result = await pdf.save();
@@ -699,177 +646,120 @@ async function generate() {
       { type: "application/pdf" }
     );
 
-    /* DESKTOP PDF PREVIEW */
+    /* SHOW PREVIEW ON DESKTOP AND MOBILE */
 
-    if (
-      window.matchMedia("(min-width: 651px)").matches
-    ) {
-
-      let frame = $("pdfPreviewFrame");
-
-      if (!frame) {
-
-        frame =
-          document.createElement("iframe");
-
-        frame.id = "pdfPreviewFrame";
-
-        frame.title = "معاينة الشهادة";
-
-        $("status").insertAdjacentElement(
-          "afterend",
-          frame
-        );
-
-      }
-
-      if (previewURL) {
-        URL.revokeObjectURL(previewURL);
-      }
-
-      previewURL =
-        URL.createObjectURL(pdfBlob);
-
-      frame.src = previewURL;
-      frame.hidden = false;
-
+    if (previewURL) {
+      URL.revokeObjectURL(previewURL);
     }
 
-    /* SAVE PARTICIPANT IN GOOGLE SHEETS */
+    previewURL = URL.createObjectURL(pdfBlob);
 
-    const form =
-      new URLSearchParams({
+    // Ask the PDF viewer to fit the whole page.
+    // Safari may ignore this setting.
+    $("pdfPreviewFrame").src =
+      previewURL + "#view=Fit&toolbar=0";
 
-        name: name,
+    $("previewSection").hidden = false;
 
-        seminar: String(n),
-
-        id: crypto.randomUUID()
-
-      });
-
-    let saveRequested = false;
-
-    try {
-
-      await fetch(SCRIPT_URL, {
-
-        method: "POST",
-
-        mode: "no-cors",
-
-        body: form
-
-      });
-
-      saveRequested = true;
-
-    } catch (error) {
-
-      console.warn(
-        "Google Sheets request failed",
-        error
-      );
-
-    }
+    /* ENABLE PDF BUTTONS */
 
     $("download").disabled = false;
-
     $("print").disabled = false;
 
-    if (saveRequested) {
+    $("status").textContent =
+      "الشهادة جاهزة للتحميل.";
 
-      $("status").textContent =
-        "الشهادة جاهزة للتحميل. تم إرسال طلب تسجيل الاسم.";
+    /* SAVE PARTICIPANT QUIETLY */
 
-    } else {
+    if (
+      SCRIPT_URL.startsWith(
+        "https://script.google.com/macros/s/"
+      )
+    ) {
+      try {
+        const form = new URLSearchParams({
+          name: name,
+          seminar: String(n),
+          id: crypto.randomUUID()
+        });
 
-      $("status").textContent =
-        "الشهادة جاهزة، لكن تعذر إرسال طلب تسجيل الاسم. يرجى المحاولة لاحقاً.";
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: form
+        });
 
+      } catch (error) {
+        console.warn(
+          "Participant registration request failed:",
+          error
+        );
+      }
     }
 
   } catch (error) {
-
     $("status").textContent =
       "حدث خطأ: " + error.message;
 
+    $("download").disabled = true;
+    $("print").disabled = true;
+    $("previewSection").hidden = true;
+
   } finally {
-
+    generating = false;
     $("generate").disabled = false;
-
   }
-
 }
 
-$("generate").addEventListener(
+$("generate").addEventListener("click", generate);
+
+/* OPEN FULL-SIZE CERTIFICATE */
+
+function openCertificate() {
+  if (!pdfBlob) return;
+
+  const url = URL.createObjectURL(pdfBlob);
+  const newTab = window.open(url, "_blank");
+
+  if (!newTab) {
+    $("status").textContent =
+      "يرجى السماح بفتح نافذة جديدة أو تحميل الشهادة.";
+  }
+
+  setTimeout(() => URL.revokeObjectURL(url), 120000);
+}
+
+$("openPreview").addEventListener(
   "click",
-  generate
+  openCertificate
 );
 
 /* DOWNLOAD PDF */
 
-$("download").addEventListener(
-  "click",
-  () => {
+$("download").addEventListener("click", () => {
+  if (!pdfBlob) return;
 
-    if (!pdfBlob) return;
+  const url = URL.createObjectURL(pdfBlob);
+  const link = document.createElement("a");
 
-    const url =
-      URL.createObjectURL(pdfBlob);
+  link.href = url;
+  link.download =
+    `شهادة_حضور_الندوة_${select.value}.pdf`;
 
-    const link =
-      document.createElement("a");
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 
-    link.href = url;
-
-    link.download =
-      `شهادة_حضور_الندوة_${select.value}.pdf`;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    setTimeout(
-      () => URL.revokeObjectURL(url),
-      60000
-    );
-
-  }
-);
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+});
 
 /* PRINT PDF */
 
 $("print").addEventListener(
   "click",
-  () => {
-
-    if (!pdfBlob) return;
-
-    const url =
-      URL.createObjectURL(pdfBlob);
-
-    const tab =
-      window.open(url, "_blank");
-
-    if (!tab) {
-
-      $("status").textContent =
-        "يرجى السماح بفتح نافذة جديدة للطباعة، أو تحميل الشهادة أولاً.";
-
-    }
-
-    setTimeout(
-      () => URL.revokeObjectURL(url),
-      120000
-    );
-
-  }
+  openCertificate
 );
 
 </script>
-
 </body>
 </html>
