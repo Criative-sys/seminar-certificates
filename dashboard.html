@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة إدارة شهادات الندوات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f8f8f4;color:#243b34;font-family:Tajawal,Arial,sans-serif}header{background:white;border-bottom:1px solid #e5e9e2;padding:20px}header .head{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}header img{width:100px;height:70px;object-fit:contain}header h1{font-size:clamp(20px,3vw,29px);color:#205a45;margin:0}header p{font-size:13px;color:#777;margin:7px 0 0}main{max-width:1100px;margin:28px auto;padding:0 16px}.panel,.metric{background:white;border:1px solid #e5eae5;border-radius:15px;box-shadow:0 5px 22px #123a2710}.panel{padding:24px;margin-bottom:20px}.login{max-width:500px;margin:70px auto}.login h2{margin:0 0 10px;color:#205a45}input{width:100%;padding:13px;border-radius:9px;border:1px solid #cbd6cf;font:inherit;font-size:16px}button{font:inherit;font-weight:700;border:0;border-radius:9px;padding:12px 18px;background:#23694e;color:white;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.muted{color:#667b70}.error{color:#aa3030}#msg{min-height:24px;margin:12px 0}.topbar{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:16px}.topbar h2{margin:0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}.metric{padding:22px;text-align:center}.metric strong{display:block;font-size:32px;color:#205a45;margin:8px}.metric span{font-size:14px;color:#6d7770}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}h3{margin:0 0 17px;color:#205a45}.bars{display:flex;flex-direction:column;gap:11px}.barrow{display:grid;grid-template-columns:52px 1fr 34px;align-items:center;gap:9px}.track{height:13px;background:#eef2ed;border-radius:9px;overflow:hidden}.fill{height:100%;background:#23694e;border-radius:9px}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid #e8ede9;text-align:right;padding:10px;vertical-align:top}th{background:#eff5f0;color:#205a45;white-space:nowrap}td{word-break:break-word}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.controls input{flex:1;min-width:200px}#logout{background:#e9f1ea;color:#205a45}#excel{background:#ae904e}#dashboard{display:none}#adminFrame{display:none}.small{font-size:13px}.center{text-align:center}@media(max-width:700px){header img{width:70px;height:55px}.grid{grid-template-columns:1fr}.metrics{gap:8px}.metric{padding:13px}.metric strong{font-size:25px}.panel{padding:16px}}
+</style>
+</head>
+<body>
+<header><div class="head"><img src="./logo-soc.png" alt="جمعية الاجتماعيين"><div class="center"><h1>لوحة إدارة شهادات الندوات</h1><p>معرض الشارقة الدولي للكتاب 2026</p></div><img src="./logo-bookfair.png" alt="معرض الشارقة الدولي للكتاب"></div></header>
+<main>
+<section id="login" class="panel login"><h2>دخول الإدارة</h2><p class="muted">أدخل كلمة مرور لوحة الإدارة لعرض المشاركين والإحصائيات.</p><form id="loginForm"><label for="password">كلمة مرور الإدارة</label><input id="password" type="password" required autocomplete="off" style="margin:9px 0 14px"><button id="loginButton" type="submit">عرض لوحة الإدارة</button></form><p id="msg" role="status"></p></section>
+<div id="dashboard">
+<div class="topbar"><h2>إحصائيات الشهادات</h2><div><button id="refresh">تحديث</button> <button id="excel">تصدير Excel</button> <button id="logout">خروج</button></div></div>
+<div class="metrics"><div class="metric"><span>إجمالي طلبات الشهادات</span><strong id="total">0</strong></div><div class="metric"><span>ندوات بها طلبات</span><strong id="active">0</strong></div><div class="metric"><span>إجمالي الندوات</span><strong>11</strong></div></div>
+<div class="grid"><section class="panel"><h3>الطلبات حسب الندوة</h3><div class="bars" id="bars"></div></section><section class="panel"><h3>ملخص الندوات</h3><div class="scroll"><table><thead><tr><th>رقم</th><th>عنوان الندوة</th><th>الطلبات</th></tr></thead><tbody id="seminarRows"></tbody></table></div></section></div>
+<section class="panel"><h3>سجل المشاركين</h3><div class="controls"><input id="search" placeholder="بحث بالاسم أو عنوان الندوة"><span class="small muted" id="rowsCount"></span></div><div class="scroll"><table><thead><tr><th>التاريخ</th><th>اسم المشارك</th><th>الندوة</th><th>عنوان الندوة</th></tr></thead><tbody id="participants"></tbody></table></div></section>
+<p class="muted small">هذه إحصائيات طلبات إصدار الشهادات، ولا تُعد تحققًا مستقلًا من حضور الندوات.</p>
+</div>
+</main>
+<iframe name="adminFrame" id="adminFrame" title="اتصال آمن بسجل المشاركين"></iframe>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
+// SAME Apps Script /exec URL used in index.html
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzhuteOdebAvZSwOKE6nDzCFcKQuRELtrDteLnVvFngPZR8JlIFt6Wlr-UU21TzTzYGmw/exec";
+const seminarTitles = [
+"الأسرة المرنة... من التفهم إلى التكيف مع متغيرات العصر",
+"تربية الأبناء في عصر الذكاء الاصطناعي",
+"اكتشاف الموهبة وبناء شخصية الأبناء",
+"بناء الوعي المجتمعي لمواجهة تحديات المستقبل... الإمارات نموذجًا",
+"الأسرة الإماراتية وتعزيز الأمن الاجتماعي والفكري",
+"كبار المواطنين... ذاكرة المجتمع ورعاية الأسرة",
+"استشراف الحياة المجتمعية بين التحولات الكبرى ومتطلبات الاستقرار",
+"الذكاء الاصطناعي ومستقبل العقل والسلوك الإنساني",
+"كيف تعيد الخوارزميات تشكيل العلاقات الإنسانية؟",
+"الخصوصية الأسرية وحماية الأبناء في العصر الرقمي",
+"جودة الحياة والوقاية الاجتماعية نحو مجتمع أكثر أمانًا"];
+const $ = id => document.getElementById(id);
+let password = "", requestId = "", loadedRows = [], counts = [];
+function requestData() {
+ if (!SCRIPT_URL.startsWith("https://script.google.com/macros/s/")) { $("msg").textContent="أضف رابط Apps Script في ملف dashboard.html أولاً.";return; }
+ requestId = crypto.randomUUID();
+ const form = document.createElement("form");
+ form.method="POST";form.action=SCRIPT_URL;form.target="adminFrame";form.style.display="none";
+ for(const [key,value] of Object.entries({action:"admin",password,requestId})) {
+  const field=document.createElement("input");field.type="hidden";field.name=key;field.value=value;form.appendChild(field);
+ }
+ document.body.appendChild(form);form.submit();form.remove();
+ $("loginButton").disabled=true;$("msg").textContent="جارٍ تحميل البيانات...";
+}
+$("loginForm").addEventListener("submit",event=>{event.preventDefault();password=$("password").value;requestData()});
+$("refresh").addEventListener("click",requestData);
+$("logout").addEventListener("click",()=>{password="";loadedRows=[];$("password").value="";$("dashboard").style.display="none";$("login").style.display="block";$("msg").textContent=""});
+window.addEventListener("message",event=>{
+ const host = new URL(event.origin).hostname;
+ if (!(host === "script.google.com" || host.endsWith(".googleusercontent.com"))) return;
+ const data=event.data;
+ if (!data || data.type!=="seminarAdmin" || data.requestId!==requestId) return;
+ $("loginButton").disabled=false;
+ if(!data.ok){$("msg").textContent=data.error||"تعذر تحميل البيانات";$("msg").className="error";return;}
+ loadedRows=data.rows||[];counts=data.counts||[];
+ $("login").style.display="none";$("dashboard").style.display="block";render();
+});
+function render(){
+ $("total").textContent=counts.reduce((a,b)=>a+Number(b||0),0);
+ $("active").textContent=counts.filter(n=>n>0).length;
+ const max=Math.max(1,...counts);$("bars").replaceChildren();$("seminarRows").replaceChildren();
+ seminarTitles.forEach((title,i)=>{
+  const bar=document.createElement("div");bar.className="barrow";
+  const num=document.createElement("span");num.textContent=`ندوة ${i+1}`;
+  const track=document.createElement("div");track.className="track";
+  const fill=document.createElement("div");fill.className="fill";fill.style.width=(100*(counts[i]||0)/max)+"%";track.appendChild(fill);
+  const count=document.createElement("strong");count.textContent=counts[i]||0;bar.append(num,track,count);$("bars").appendChild(bar);
+  const tr=document.createElement("tr");[i+1,title,counts[i]||0].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td)});$("seminarRows").appendChild(tr);
+ });renderRows();
+}
+function renderRows(){const q=$("search").value.trim().toLocaleLowerCase();const result=loadedRows.filter(r=>[r.name,r.title,String(r.seminar)].join(" ").toLocaleLowerCase().includes(q));$("rowsCount").textContent=`${result.length} سجل`;
+ $("participants").replaceChildren();result.forEach(r=>{const tr=document.createElement("tr");[r.date,r.name,r.seminar,r.title].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.appendChild(td)});$("participants").appendChild(tr)});
+}
+$("search").addEventListener("input",renderRows);
+$("excel").addEventListener("click",()=>{
+ if(!loadedRows.length){alert("لا توجد بيانات للتصدير");return;}
+ const rows=loadedRows.map(r=>({"تاريخ التسجيل":r.date,"رقم الطلب":r.id,"اسم المشارك":r.name,"رقم الندوة":r.seminar,"عنوان الندوة":r.title,"تاريخ الندوة":r.seminarDate}));
+ if(window.XLSX){const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),"Participants");XLSX.writeFile(wb,"Seminar-Participants-2026.xlsx");}
+ else{alert("تعذر تحميل مكتبة Excel. يمكنك تصدير ملف Excel من Google Sheets مباشرة.");}
+});
+</script>
+</body>
+</html>
