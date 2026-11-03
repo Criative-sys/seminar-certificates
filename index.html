@@ -159,7 +159,7 @@ async function generate(){
   if(name.length<3){$("status").textContent="يرجى إدخال الاسم الكامل.";return;}
   if(!window.PDFLib){$("status").textContent="تعذر تحميل مكتبة إنشاء الشهادات، يرجى تحديث الصفحة.";return;}
   if(!SCRIPT_URL.startsWith("https://script.google.com/macros/s/")){
-    $("status").textContent="يرجى ضبط رابط Google Apps Script أولاً.";return;
+    $("status").textContent="";return;
   }
   $("generate").disabled=true;
   $("status").textContent="جارٍ تجهيز الشهادة...";
@@ -184,7 +184,7 @@ async function generate(){
     $("certificatePreview").hidden=false;
     $("templatePreview").onerror=()=>{
       $("certificatePreview").hidden=true;
-      $("status").textContent="الشهادة جاهزة للتحميل، لكن صورة المعاينة غير موجودة. تأكد من رفع مجلد previews إلى GitHub.";
+      $("status").textContent="الشهادة جاهزة للتحميل، لكن صورة المعاينة غير موجودة.";
     };
 
     const form=new URLSearchParams({name,seminar:String(n),id:crypto.randomUUID()});
@@ -193,12 +193,12 @@ async function generate(){
       await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:form});
     }catch(error){
       console.warn("Google Sheets logging request failed",error);
-      $("status").textContent="الشهادة جاهزة، لكن تعذّر إرسال طلب التسجيل إلى Google Sheets.";
+      $("status").textContent="الشهادة جاهزة.";
     }
     $("download").disabled=false;
     $("print").disabled=false;
     if(!$("status").textContent || $("status").textContent==="جارٍ تجهيز الشهادة..."){
-      $("status").textContent="الشهادة جاهزة للتحميل. يرجى التأكد من تسجيل الاسم في Google Sheets.";
+      $("status").textContent="الشهادة جاهزة للتحميل.";
     }
   }catch(error){
     $("status").textContent="حدث خطأ: "+error.message;
